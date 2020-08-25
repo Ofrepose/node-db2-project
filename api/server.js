@@ -39,9 +39,9 @@ server.post('/', async(req,res,next)=>{
     }
 })
 
-server.put('/:id', async (req,res,check)=>{
+server.put('/:id', async (req,res,next)=>{
     try{
-        const editItem = await db('cars')
+        await db('cars')
             .update({
                 vin:req.body.vin,
                 make:req.body.make,
@@ -50,8 +50,8 @@ server.put('/:id', async (req,res,check)=>{
                 transmission:req.body.transmission,
                 titleStatus:req.body.titleStatus
             })
-            .where('id',req.param.id)
-        const current = await getById(req.params.id)
+            .where('id',req.params.id)
+        const current = await getByID(req.params.id)
         res.status(201).json(current)
     }
     catch (e) {
@@ -59,9 +59,9 @@ server.put('/:id', async (req,res,check)=>{
     }
 })
 
-server.delete('/:id', async(req,res,check)=>{
+server.delete('/:id', async(req,res,next)=>{
     try{
-        const deletedData = await getById(req.params.id)
+        const deletedData = await getByID(req.params.id)
         await db('cars')
             .delete('*')
             .where('id', req.params.id)
